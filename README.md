@@ -12,7 +12,7 @@
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/wwdc-search.git
+   git remote add origin https://github.com/YOUR_USERNAME/wwdc-search-.git
    git push -u origin main
    ```
 3. 在 GitHub 仓库设置中：
