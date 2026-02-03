@@ -191,9 +191,14 @@ class WWDCApp {
   }
 
   initYouTubeAPI() {
-    window.onYouTubeIframeAPIReady = () => {
+    // If YT is already loaded (e.g. script finished before this code ran)
+    if (window.YT && window.YT.Player) {
       this.ytReady = true;
-    };
+    } else {
+      window.onYouTubeIframeAPIReady = () => {
+        this.ytReady = true;
+      };
+    }
   }
 
   openVideoPreview(year, title, startTime, endTime, ytId, videoUrl) {
