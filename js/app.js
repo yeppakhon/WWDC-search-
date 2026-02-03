@@ -158,8 +158,17 @@ class WWDCApp {
       btn.addEventListener('click', () => {
         const { url, time, title, id } = btn.dataset;
         const card = btn.closest('.result-card');
-        const year = card.dataset.videoYear;
-        const videoId = this.extractYouTubeId(url);
+        const year = parseInt(card.dataset.videoYear);
+        let videoId = this.extractYouTubeId(url);
+
+        // Fallback: If no ID found in URL, try to find it in the thumbnail from data
+        if (!videoId) {
+          const videoData = wwdcData.find(v => v.year === year);
+          if (videoData && videoData.thumbnail) {
+            videoId = this.extractYouTubeId(videoData.thumbnail);
+          }
+        }
+
         this.openVideoPreview(year, title, time, '...', videoId, url);
       });
     });
@@ -177,7 +186,7 @@ class WWDCApp {
 
   extractYouTubeId(url) {
     if (!url) return null;
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]{11})/);
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)|img\.youtube\.com\/vi\/)([^&?\/]{11})/);
     return match ? match[1] : null;
   }
 
